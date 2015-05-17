@@ -23,6 +23,9 @@ public abstract class LayeredState extends GameState {
 	 */
 	
 	private ArrayList<Layer> images;
+
+	private int lastUpdated;
+
 	//layer just container of buffered image and an id
 	public LayeredState(int id, StateBasedGame sbg) {
 		super(id, sbg);
@@ -36,18 +39,15 @@ public abstract class LayeredState extends GameState {
 
 	@Override
 	public void render(Graphics g) {
-		for(int i=0; i<images.size(); i++)
-			g.drawImage(images.get(i).image, 0, 0, (ImageObserver) this);
+		try {
+			while (lastUpdated < images.size())
+				images.get(lastUpdated).image = renderLayer(lastUpdated++);
+			g.drawImage(images.get(images.size() - 1).image, 0, 0, (ImageObserver) this);
+		}catch(Exception e){System.out.println("A renderLayer exception has occurred...");}
 	}
 	
 	protected void addLayer(int id){
 		images.add(new Layer(id));
-	}
-	
-	protected void setLayerImage(BufferedImage image, int index){
-		for(int i=0; i<images.size(); i++)
-			if(images.get(i).id==index)
-				images.get(i).image=image;
 	}
 	
 	protected abstract void initLayers();

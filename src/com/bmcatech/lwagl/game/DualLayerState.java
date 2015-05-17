@@ -36,14 +36,6 @@ public abstract class DualLayerState extends LayeredState {
 			throw new LWSGLLayerException("The layer with id =" + index + " does not exist...");
 	}
 	
-	protected void updateBackground() throws LWSGLLayerException{
-		setLayerImage(renderLayer(BACKGROUND), BACKGROUND);
-	}
-	
-	protected void updateForeground() throws LWSGLLayerException{
-		setLayerImage(renderLayer(FOREGROUND), FOREGROUND);
-	}
-	
 	public abstract void renderBackground(Graphics g);
 	public abstract void renderForeground(Graphics g);
 }

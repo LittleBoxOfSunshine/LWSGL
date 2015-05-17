@@ -41,18 +41,6 @@ public abstract class TriLayerState extends LayeredState {
             return null;//REPLACE WITH EXCEPTION IN FUTURE
     }
 
-    protected void updateBackground(){
-        setLayerImage(renderLayer(BACKGROUND), BACKGROUND);
-    }
-
-    protected void updateForeground(){
-        setLayerImage(renderLayer(FOREGROUND), FOREGROUND);
-    }
-
-    protected void updateHighground(){
-        setLayerImage(renderLayer(HIGHGROUND), HIGHGROUND);
-    }
-
     public abstract void renderBackground(Graphics g);
     public abstract void renderForeground(Graphics g);
     public abstract void renderHighground(Graphics g);
