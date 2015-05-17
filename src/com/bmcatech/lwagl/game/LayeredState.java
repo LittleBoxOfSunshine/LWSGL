@@ -2,25 +2,15 @@ package com.bmcatech.lwagl.game;
 
 import com.bmcatech.lwagl.exception.LWSGLLayerException;
 
-import java.awt.Graphics;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
 import java.awt.image.ImageObserver;
+import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 
 public abstract class LayeredState extends GameState {
-	/*  TO DO:
-		replace arraylist with better data structure (hash table)
-		caching of frames:
-			keep track of the lowest change rendered
-			have cacheFrame be the rendered image of all unchanged layers (those beneath lowest change)
-			change render to draw the cache then start the loop at lowest change instead of 0
-			render also needs to update cacheFrame based on changes to lowest change
-			render should reset lowest change each frame
-
-			cache frame should be an array of frames, whenever cache frame is updated it starts at the change and builds up
-
-			following this method then render would just call the end of the cache, not each step past lowest
-	 */
 	
 	private ArrayList<Layer> images;
 
@@ -40,8 +30,15 @@ public abstract class LayeredState extends GameState {
 	@Override
 	public void render(Graphics g) {
 		try {
-			while (lastUpdated < images.size())
-				images.get(lastUpdated).image = renderLayer(lastUpdated++);
+			while (lastUpdated < images.size()) {
+				if(lastUpdated != 0)
+					images.get(lastUpdated).image = images.get(lastUpdated-1).image;
+				else
+					images.get(lastUpdated).image = new BufferedImage(StateBasedGame.width, StateBasedGame.height, BufferedImage.TYPE_INT_RGB);
+
+				images.get(lastUpdated).image.getGraphics().drawImage(renderLayer(lastUpdated), 0, 0, null);
+				lastUpdated++;
+			}
 			g.drawImage(images.get(images.size() - 1).image, 0, 0, (ImageObserver) this);
 		}catch(Exception e){System.out.println("A renderLayer exception has occurred...");}
 	}
@@ -61,5 +58,6 @@ class Layer{
 	public int id;
 	public Layer(int index){
 		this.id = index;
+		image = new BufferedImage(StateBasedGame.width, StateBasedGame.height, BufferedImage.TYPE_INT_RGB);
 	}
 }
