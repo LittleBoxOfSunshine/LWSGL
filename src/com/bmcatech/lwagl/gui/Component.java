@@ -1,7 +1,7 @@
-package com.bmcatech.lwagl.ui;
+package com.bmcatech.lwagl.gui;
 import java.awt.Graphics;
 
-import com.bmcatech.lwagl.Input;
+import com.bmcatech.lwagl.tools.Input;
 
 public abstract class Component {
 	

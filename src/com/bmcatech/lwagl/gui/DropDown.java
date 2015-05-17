@@ -1,8 +1,6 @@
-package com.bmcatech.lwagl.ui;
+package com.bmcatech.lwagl.gui;
 
 import java.awt.*;
-
-import com.bmcatech.lwagl.Input;
 
 public class DropDown extends Component{
 		public Button[] options;

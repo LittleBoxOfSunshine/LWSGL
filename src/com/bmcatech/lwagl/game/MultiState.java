@@ -1,4 +1,4 @@
-package com.bmcatech.lwagl;
+package com.bmcatech.lwagl.game;
 
 import com.bmcatech.lwagl.exception.LWSGLException;
 import com.bmcatech.lwagl.exception.LWSGLSubStateException;
@@ -6,7 +6,7 @@ import com.bmcatech.lwagl.exception.LWSGLSubStateException;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
-public abstract class MultiState extends GameState{
+public abstract class MultiState extends GameState {
 
 	private static ArrayList<GameState> subStates;
 	protected static int activeState;

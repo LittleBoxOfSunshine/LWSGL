@@ -1,5 +1,7 @@
-package com.bmcatech.lwagl;
+package com.bmcatech.lwagl.tools;
 
+
+import com.bmcatech.lwagl.game.StateBasedGame;
 
 public abstract class Input{
 	

@@ -1,11 +1,11 @@
-package com.bmcatech.lwagl;
+package com.bmcatech.lwagl.game;
 
 import com.bmcatech.lwagl.exception.LWSGLLayerException;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-public abstract class DualLayerState extends LayeredState{
+public abstract class DualLayerState extends LayeredState {
 
 	public static final int BACKGROUND = 0;
 	public static final int FOREGROUND = 1;

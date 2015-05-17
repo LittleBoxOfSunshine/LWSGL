@@ -1,4 +1,4 @@
-package com.bmcatech.lwagl;
+package com.bmcatech.lwagl.game;
 
 import com.bmcatech.lwagl.exception.LWSGLLayerException;
 
@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 
-public abstract class LayeredState extends GameState{
+public abstract class LayeredState extends GameState {
 	/*  TO DO:
 		replace arraylist with better data structure (hash table)
 		caching of frames:

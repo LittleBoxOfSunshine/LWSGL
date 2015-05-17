@@ -5,4 +5,4 @@
  * @author Chris
  *
  */
-package com.bmcatech.lwagl.ui;
+package com.bmcatech.lwagl.gui;

@@ -1,4 +1,4 @@
-package com.bmcatech.lwagl;
+package com.bmcatech.lwagl.game;
 import com.bmcatech.lwagl.exception.LWSGLException;
 
 import java.awt.Graphics;

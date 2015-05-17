@@ -1,6 +1,6 @@
-package com.bmcatech.lwagl;
+package com.bmcatech.lwagl.game;
 import com.bmcatech.lwagl.exception.LWSGLException;
-import com.bmcatech.lwagl.exception.LWSGLStateException;
+import com.bmcatech.lwagl.game.GameState;
 
 import java.awt.event.*;
 import java.awt.image.BufferedImage;

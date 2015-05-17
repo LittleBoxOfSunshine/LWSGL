@@ -1,9 +1,9 @@
-package com.bmcatech.lwagl;
+package com.bmcatech.lwagl.game;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-public abstract class TriLayerState extends LayeredState{
+public abstract class TriLayerState extends LayeredState {
 
     public static final int BACKGROUND = 0;
     public static final int FOREGROUND = 1;

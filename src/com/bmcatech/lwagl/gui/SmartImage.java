@@ -1,4 +1,4 @@
-package com.bmcatech.lwagl.ui;
+package com.bmcatech.lwagl.gui;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
