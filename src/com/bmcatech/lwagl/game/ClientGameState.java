@@ -1,4 +1,4 @@
-package com.bmcatech.lwagl.client;
+package com.bmcatech.lwagl.game;
 
 /**
  * Created by cahenk on 5/17/15.
