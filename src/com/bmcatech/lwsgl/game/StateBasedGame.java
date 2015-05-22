@@ -1,5 +1,7 @@
 package com.bmcatech.lwsgl.game;
 import com.bmcatech.lwsgl.exception.LWSGLException;
+import com.bmcatech.lwsgl.exception.LWSGLMapException;
+import com.bmcatech.lwsgl.exception.LWSGLStateException;
 
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -18,7 +20,7 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
 	protected static int tps = 30, fps=60 , width= 500, height = 500, activeState, mouseX=0, mouseY=0;
 	public static boolean mouse0, mouse1;
 	public static boolean[] keys = new boolean[255];
-	private static ArrayList<GameState> states = new ArrayList<GameState>();
+	private static Map<Integer, GameState> states = new HashMap<Integer, GameState>();
 	private String title;
 	
 	public StateBasedGame(String title){
@@ -48,18 +50,26 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
 		g = getGraphics();
 		long tickTime = System.currentTimeMillis();
 		long lastFrameTime = tickTime;
+		long resting = 0;
 		while(playing){
 			if(pause)
 				sleep(100);
 			else{
 				if( (1000 / tps) - (System.currentTimeMillis() - tickTime) <= 0){
+					resting += Math.abs(tickTime-System.currentTimeMillis());
                 	tickTime = System.currentTimeMillis();
                 	update(); 
                 }
 				if( (1000 / fps) - (System.currentTimeMillis() - lastFrameTime) <= 0) {
+					resting += Math.abs(tickTime-System.currentTimeMillis());
 					lastFrameTime = System.currentTimeMillis();
 					render();
 				}
+
+				try{
+					Thread.sleep(resting);
+					resting = 0;
+				}catch(Exception e){e.printStackTrace();}
 			}
 		}
 	}
@@ -82,17 +92,13 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
 	}
 	
 	protected void addState(GameState state){
-		states.add(state);
+		states.put(state.getID(), state);
 	}
 	
-	public void enterState(int state){
-		sleep(100);
-		for(int i = 0; i<states.size(); i++)
-			if(states.get(i).getID()==state){
-				 activeState = i;
-				 return;
-			}
-		activeState = 0;//REPLACE WITH ERROR CODE IN FUTURE
+	public void enterState(int state) throws LWSGLStateException{
+		this.activeState = state;
+		if(this.states.get(state) == null)
+			throw new LWSGLStateException("Error: There is no stat with id = " + state + "...");
 	}
 	
 	public GameState getState(int state){
@@ -161,6 +167,6 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
 		return mouseY;
 	}
 	
-	protected abstract void initStatesList();
+	protected abstract void initStatesList() throws LWSGLStateException;
 	
 }

@@ -3,6 +3,7 @@ package com.bmcatech.lwsgl.map;
 import com.bmcatech.lwsgl.exception.LWSGLMapException;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.*;
@@ -57,8 +58,20 @@ public class TiledMap {
         }
     }
 
-    private Tile getTile(int tileID){
-        return this.tiles.get(tileID-1);
+    public void drawTiles(int x, int y, int row, int col, int width, int height, Graphics g){
+        int tempTileID;
+        for(int i=0; i<height; i++)
+            for(int z=0; z<width; z++)
+                for(String key : this.layers.keySet()) {
+                    tempTileID = this.layers.get(key).getTileID(row + i, col + z);
+                    if(tempTileID > 0)
+                        this.tiles.get(tempTileID).drawTile(x, y, g);
+                }
+
+    }
+
+    public BufferedImage renderTiles(int x, int y, int row, int col, int width, int height){
+        return null;
     }
 
     private void buildLayer(String[] props, Scanner file){
