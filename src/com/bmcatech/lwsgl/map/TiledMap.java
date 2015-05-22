@@ -20,6 +20,8 @@ public class TiledMap {
     private Map<String, String> properties;
     private Map<Integer, Tile> tiles;
 
+    private int tileWidth, tileHeight, width, height;
+
     public TiledMap(String path) throws LWSGLMapException{
         Scanner file;
 
@@ -43,6 +45,10 @@ public class TiledMap {
             switch(props[0]){
                 case "map":
                     this.properties = parseProperties(props);
+                    width = Integer.parseInt(properties.get("width"));
+                    height = Integer.parseInt(properties.get("height"));
+                    tileWidth = Integer.parseInt(properties.get("tilewidth"));
+                    tileHeight = Integer.parseInt(properties.get("tileheight"));
                     break;
                 case "tileset":
                     buildTiles(props, file);
@@ -58,20 +64,51 @@ public class TiledMap {
         }
     }
 
+    public void drawTiles(int row, int col, int width, int height, Graphics g){
+
+    }
+
     public void drawTiles(int x, int y, int row, int col, int width, int height, Graphics g){
         int tempTileID;
         for(int i=0; i<height; i++)
-            for(int z=0; z<width; z++)
-                for(String key : this.layers.keySet()) {
-                    tempTileID = this.layers.get(key).getTileID(row + i, col + z);
-                    if(tempTileID > 0)
-                        this.tiles.get(tempTileID).drawTile(x, y, g);
-                }
+            for(int z=0; z<width; z++) {
+                //for(String key : this.layers.keySet()) {
+                tempTileID = this.layers.get("Background").getTileID(row + i, col + z);
+                if (tempTileID > 0)
+                    this.tiles.get(tempTileID).drawTile(x + (z * tileWidth), y + (i * tileHeight), g);
+                //}
+                tempTileID = this.layers.get("Foreground").getTileID(row + i, col + z);
+                if (tempTileID > 0)
+                    this.tiles.get(tempTileID).drawTile(x + (z * tileWidth), y + (i * tileHeight), g);
+                tempTileID = this.layers.get("Top").getTileID(row + i, col + z);
+                if (tempTileID > 0)
+                    this.tiles.get(tempTileID).drawTile(x + (z * tileWidth), y + (i * tileHeight), g);
+            }
+    }
+
+    public void drawTileLayer(int row, int col, int width, int height, Graphics g){
+
+    }
+
+    public void drawTileLayer(int x, int y, int row, int col, int width, int height, Graphics g){
+
+
+    }
+
+    public BufferedImage renderTiles(int row, int col, int width, int height){
 
     }
 
     public BufferedImage renderTiles(int x, int y, int row, int col, int width, int height){
         return null;
+    }
+
+    public BufferedImage renderTileLayer(int row, int col, int width, int height, String layerKey){
+
+    }
+
+    public BufferedImage renderTileLayer(int x, int y, int row, int col, int width, int height, String layerKey){
+
     }
 
     private void buildLayer(String[] props, Scanner file){
@@ -90,7 +127,7 @@ public class TiledMap {
 
             for(int i=0; i < height; i++){
                 for(int z=0; z< width; z++) {
-                    tempArr[i][z] = Integer.parseInt(temp[z].trim());
+                    tempArr[i][z] = Integer.parseInt(temp[i*width+z].trim());
                 }
             }
 

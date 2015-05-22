@@ -50,26 +50,26 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
 		g = getGraphics();
 		long tickTime = System.currentTimeMillis();
 		long lastFrameTime = tickTime;
-		long resting = 0;
+		long tpsTime = 1000 / tps;
+		long fpsTime = 1000 / fps;
 		while(playing){
 			if(pause)
 				sleep(100);
 			else{
-				if( (1000 / tps) - (System.currentTimeMillis() - tickTime) <= 0){
-					resting += Math.abs(tickTime-System.currentTimeMillis());
+				try{
+					if(tpsTime - (System.currentTimeMillis() - tickTime) > 0)
+						Thread.sleep(tpsTime - (System.currentTimeMillis() - tickTime));
+					if( fpsTime - (System.currentTimeMillis() - lastFrameTime) > 0)
+						Thread.sleep(fpsTime - (System.currentTimeMillis() - lastFrameTime));
+				}catch(Exception e){e.printStackTrace();}
+				if( tpsTime - (System.currentTimeMillis() - tickTime) <= 0){
                 	tickTime = System.currentTimeMillis();
-                	update(); 
+                	update();
                 }
-				if( (1000 / fps) - (System.currentTimeMillis() - lastFrameTime) <= 0) {
-					resting += Math.abs(tickTime-System.currentTimeMillis());
+				if( fpsTime - (System.currentTimeMillis() - lastFrameTime) <= 0) {
 					lastFrameTime = System.currentTimeMillis();
 					render();
 				}
-
-				try{
-					Thread.sleep(resting);
-					resting = 0;
-				}catch(Exception e){e.printStackTrace();}
 			}
 		}
 	}
