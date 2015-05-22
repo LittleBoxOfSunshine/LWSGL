@@ -1,0 +1,5 @@
+public class test{
+	public static void main(String [] args){
+		TiledMap map = new TiledMap("test.tml");
+	}
+}
