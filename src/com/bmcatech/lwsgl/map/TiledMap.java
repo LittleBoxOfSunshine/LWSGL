@@ -65,7 +65,7 @@ public class TiledMap {
     }
 
     public void drawTiles(int row, int col, int width, int height, Graphics g){
-
+        drawTiles(0, 0, row, col, width, height, g);
     }
 
     public void drawTiles(int x, int y, int row, int col, int width, int height, Graphics g){
@@ -86,17 +86,33 @@ public class TiledMap {
             }
     }
 
-    public void drawTileLayer(int row, int col, int width, int height, Graphics g){
+    public void drawTileLayer(int row, int col, int width, int height, Graphics g, String layerKey){
 
     }
 
-    public void drawTileLayer(int x, int y, int row, int col, int width, int height, Graphics g){
+    public void drawTileLayer(int x, int y, int row, int col, int width, int height, Graphics g, String layerKey){
 
+
+    }
+
+    public void drawTile(int row, int col, Graphics g){
+
+    }
+
+    public void drawTile(int x, int y, int row, int col, Graphics g){
+
+    }
+
+    public void drawTileInLayer(int row, int col, Graphics g, String layerKey){
+
+    }
+
+    public void drawTileInLayer(int x, int y, int row, int col, Graphics g, String layerKey){
 
     }
 
     public BufferedImage renderTiles(int row, int col, int width, int height){
-
+        return null;
     }
 
     public BufferedImage renderTiles(int x, int y, int row, int col, int width, int height){
@@ -104,11 +120,19 @@ public class TiledMap {
     }
 
     public BufferedImage renderTileLayer(int row, int col, int width, int height, String layerKey){
-
+        return null;
     }
 
     public BufferedImage renderTileLayer(int x, int y, int row, int col, int width, int height, String layerKey){
+        return null;
+    }
 
+    public BufferedImage renderTile(int row, int col){
+        return null;
+    }
+
+    public BufferedImage renderTile(int x, int y, int row, int col){
+        return null;
     }
 
     private void buildLayer(String[] props, Scanner file){
