@@ -72,6 +72,7 @@ public class TiledMap {
         int tempTileID;
         for(int i=0; i<height; i++)
             for(int z=0; z<width; z++) {
+                
                 //for(String key : this.layers.keySet()) {
                 tempTileID = this.layers.get("Background").getTileID(row + i, col + z);
                 if (tempTileID > 0)
