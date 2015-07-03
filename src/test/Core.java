@@ -15,7 +15,7 @@ public class Core extends StateBasedGame{
 	public static final int TESTAREA = 6;
 	public static final int MMOTEST = 7;
 	
-	public Core(String name){
+	public Core(String name) throws LWSGLStateException{
 		super(name);
 		this.addState(new MainMenu(MENU, this));
 		this.addState(new Create(CREATE, this));

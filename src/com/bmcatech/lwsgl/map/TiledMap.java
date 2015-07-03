@@ -72,7 +72,7 @@ public class TiledMap {
         int tempTileID;
         for(int i=0; i<height; i++)
             for(int z=0; z<width; z++) {
-                
+
                 //for(String key : this.layers.keySet()) {
                 tempTileID = this.layers.get("Background").getTileID(row + i, col + z);
                 if (tempTileID > 0)
@@ -150,6 +150,7 @@ public class TiledMap {
             String derp = file.next();
             String[] temp = derp.split(",");
 
+            //Split each line of csv formatted tile ids, trim extra characters, convert to int and store
             for(int i=0; i < height; i++){
                 for(int z=0; z< width; z++) {
                     tempArr[i][z] = Integer.parseInt(temp[i*width+z].trim());

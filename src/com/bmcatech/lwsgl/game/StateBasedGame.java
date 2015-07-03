@@ -20,6 +20,7 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
 	protected static int tps = 30, fps=60 , width= 500, height = 500, activeState, mouseX=0, mouseY=0;
 	public static boolean mouse0, mouse1;
 	public static boolean[] keys = new boolean[255];
+	private static long stateSwitchDelay = 100;
 	private static Map<Integer, GameState> states = new HashMap<Integer, GameState>();
 	private String title;
 	
@@ -59,7 +60,7 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
 				try{
 					if(tpsTime - (System.currentTimeMillis() - tickTime) > 0)
 						Thread.sleep(tpsTime - (System.currentTimeMillis() - tickTime));
-					if( fpsTime - (System.currentTimeMillis() - lastFrameTime) > 0)
+					else if( fpsTime - (System.currentTimeMillis() - lastFrameTime) > 0)
 						Thread.sleep(fpsTime - (System.currentTimeMillis() - lastFrameTime));
 				}catch(Exception e){e.printStackTrace();}
 				if( tpsTime - (System.currentTimeMillis() - tickTime) <= 0){
@@ -91,21 +92,39 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
 		}
 	}
 	
-	protected void addState(GameState state){
-		states.put(state.getID(), state);
+	protected void addState(GameState state) throws LWSGLStateException{
+		//Check if id already exists, if it does throw an exception, if not then the new state has been successfully added
+		if(states.put(state.getID(), state) != null)
+			throw new LWSGLStateException("Error: There is already a state with id = " + state.getID() + "...");
 	}
 	
-	public void enterState(int state) throws LWSGLStateException{
-		this.activeState = state;
-		if(this.states.get(state) == null)
-			throw new LWSGLStateException("Error: There is no stat with id = " + state + "...");
+	public void enterState(int stateID) throws LWSGLStateException{
+		//Delay state switch to avoid unintentional user input
+		StateBasedGame.stateSwitchDelay();
+
+		//Check if the requested stateID exists, if it doesn't throw and exception
+		if(this.states.get(stateID) == null)
+			throw new LWSGLStateException("Error: There is no stat with id = " + stateID + "...");
+		else//Valid stateID, switch it to the active state
+			this.activeState = stateID;
 	}
 	
-	public GameState getState(int state){
-		for(int i = 0; i<states.size(); i++)
-			if(states.get(i).getID()==state)
-				return states.get(i);
-		return null;//REPLACE WITH ERROR CODE IN FUTURE
+	public GameState getState(int stateID) throws LWSGLStateException{
+		GameState tempState = states.get(stateID);
+		//If null then requested state does not exist, throw exception else return the requested state
+		if(tempState != null)
+			return tempState;
+		else
+			throw new LWSGLStateException("The subState id = " + stateID + " does not exist...");
+	}
+
+	//Delay state switch to avoid unintentional user input
+	public static void stateSwitchDelay(){
+		sleep(StateBasedGame.stateSwitchDelay);
+	}
+
+	public static void setStateSwitchDelay(long delay){
+		StateBasedGame.stateSwitchDelay = delay;
 	}
 	
 	protected static void setScreenSize(int x, int y){
