@@ -1,36 +1,56 @@
 package com.bmcatech.lwsgl.game;
-import com.bmcatech.lwsgl.exception.LWSGLException;
-import com.bmcatech.lwsgl.exception.LWSGLMapException;
-import com.bmcatech.lwsgl.exception.LWSGLStateException;
 
-import java.awt.event.*;
+import com.bmcatech.lwsgl.exception.LWSGLException;
+import com.bmcatech.lwsgl.exception.LWSGLStateException;
+import com.bmcatech.lwsgl.gui.Component;
+
+import java.awt.Graphics;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-import java.awt.*;
-import java.util.*;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
-public abstract class StateBasedGame extends JFrame implements KeyListener, MouseListener, MouseMotionListener{
+public abstract class StateBasedGame extends JFrame implements KeyListener, MouseListener, MouseMotionListener {
 	
 	private Graphics g;
 	private BufferedImage bufferGraphics;
 	private Random r = new Random();
 	private static boolean playing = true;
 	private static boolean pause = false;
+	private static ArrayList<Component> componentsWithTypeListeners, componentsWithClickListeners;
 	protected static int tps = 30, fps=60 , width= 500, height = 500, activeState, mouseX=0, mouseY=0;
-	public static boolean mouse0, mouse1;
+	private static int tickNumber;
+	private static boolean leftMouseButton, rightMouseButton, leftMouseClick, rightMouseClick;
+	private static KeyBuffer keyBuffer;
 	public static boolean[] keys = new boolean[255];
+	private static boolean mouseOnScreen;
 	private static long stateSwitchDelay = 100;
 	private static Map<Integer, GameState> states = new HashMap<Integer, GameState>();
 	private String title;
-	
+	public static final int LEFT_MOUSE_BUTTON=0, RIGHT_MOUSE_BUTTON=1;
+
 	public StateBasedGame(String title){
 		this.title = title;
 	}
 
 	public final void init(){//Instantiates Variables and creates and instance of the game class
-		mouse0=false;
-		mouse1=false;
+		keyBuffer = new KeyBuffer();
+		componentsWithTypeListeners = new ArrayList<Component>();
+		leftMouseButton=false;
+		rightMouseButton=false;
+		leftMouseClick = false;
+		rightMouseClick = false;
+		tickNumber=0;
 		setSize(width, height);
 		bufferGraphics = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		addKeyListener(this);
@@ -81,7 +101,18 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
 		g.drawImage(bufferGraphics, 0, 0, this);//draw updated buffer to screen
 	}
 	public void update() throws LWSGLException{
+		if(keyBuffer.hasEvent()) {
+			final char[] keyB = keyBuffer.getKeys();
+			for (Component c : componentsWithTypeListeners)
+				c.onKeysTyped(keyB);
+		}
+
+		tickNumber++;
+
 		states.get(activeState).update();
+		leftMouseClick = false;
+		rightMouseClick = false;
+
 	}
 	//Sleeps for x milliseconds
 	public static void sleep(long x){
@@ -139,53 +170,133 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
 	protected static void setFPS(int x){
 		fps = x;
 	}
+
+	public static boolean isMouseOnScreen(){
+		return mouseOnScreen;
+	}
 	
 	public void keyPressed( KeyEvent e ){
 		keys[e.getKeyCode()] = true;
 	}
+
 	public void keyReleased( KeyEvent e ){
 		keys[e.getKeyCode()] = false;
 	}
 	public void keyTyped( KeyEvent e ){
+		System.out.println(e.getKeyChar());
 	}
+
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		if(e.getButton()==1)
+			leftMouseClick = true;
+		if(e.getButton()==3)
+			rightMouseClick = true;
 	}
+
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		this.mouseOnScreen = true;
 	}
+
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		this.mouseOnScreen = false;
 	}
+
 	public void mousePressed(MouseEvent e) {
 		if(e.getButton()==1)
-			mouse0 = true;
+			leftMouseButton = true;
 		if(e.getButton()==3)
-			mouse1 = true;
+			rightMouseButton = true;
 	}
+
 	public void mouseReleased(MouseEvent e) {
 		if(e.getButton()==1)
-			mouse0 = false;
+			leftMouseButton = false;
 		if(e.getButton()==3)
-			mouse1 = false;
+			rightMouseButton = false;
 	}
+
 	public void mouseMoved(MouseEvent me){
 		mouseX = me.getX();
 		mouseY = me.getY();
 	}
+
 	public void mouseDragged(MouseEvent me){
-		
+		//Integrated mouse Drag implementation isn't useful for this engine but the implemented function is required by the interface
 	}
+
 	public static int getMouseX(){
 		return mouseX;
 	}
+
 	public static int getMouseY(){
 		return mouseY;
 	}
-	
+
+	public static boolean getLeftMouseButton(){
+		return leftMouseButton;
+	}
+
+	public static boolean getRightMouseButton(){
+		return rightMouseButton;
+	}
+
+	public static boolean getLeftMouseClick(){
+		return leftMouseClick;
+	}
+
+	public static boolean getRightMouseClick(){
+		return rightMouseClick;
+	}
+
 	protected abstract void initStatesList() throws LWSGLStateException;
-	
+
+	public static int getTickNumber(){
+		return tickNumber;
+	}
+
+	public static void addComponentTypeListener(Component component){
+		componentsWithTypeListeners.add(component);
+	}
+
+	public static void addComponentClickListener(Component component){
+		componentsWithClickListeners.add(component);
+	}
+}
+
+class KeyBuffer{
+	private static int currentCapacity;
+	private static char[] buffer;
+	private static final int MAX_BUFFER_SIZE = 1000;
+	private static boolean event;
+
+	public KeyBuffer(){
+		buffer = new char[MAX_BUFFER_SIZE];
+		currentCapacity = 0;
+		event = false;
+	}
+
+	public static void flush(){
+		currentCapacity = 0;
+		event = false;
+	}
+
+	public static void appendKey(char key){
+		buffer[currentCapacity] = key;
+		currentCapacity++;
+		event = true;
+	}
+
+	public static char[] getKeys(){
+		event = false;
+
+		if(currentCapacity > 0)
+			return Arrays.copyOfRange(buffer, 0, currentCapacity);
+		else
+			return null;
+	}
+
+	public static boolean hasEvent(){
+		return event;
+	}
+
 }

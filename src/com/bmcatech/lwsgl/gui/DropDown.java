@@ -82,6 +82,9 @@ public class DropDown extends Component{
 				g.setColor(Color.black);
 				g.drawRect(x, y, width, height);
 			}
+
+			//TODO: Optimize by drawing from cache
+
 			else{
 				g.drawImage(i, x, y, null);
 				//g.setFont("Arial");//Apply change font settings here (get default font from appropriate static class
@@ -110,7 +113,7 @@ public class DropDown extends Component{
 		}
 
 		@Override
-		protected void onClick(boolean click) {
+		protected void onClick() {
 			invertOpen();
 		}
 		

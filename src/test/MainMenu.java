@@ -18,11 +18,11 @@ public class MainMenu extends GameState {
 	}
 	
 	public void init(){
-		newGame = new Button("button_base.png", "button_base_hover.png", "New", 250, 100);
-		loadGame = new Button("button_base.png", "button_base_hover.png", "Load", 250, 200);
-		options = new Button("button_base.png", "button_base_hover.png", "Options", 250, 300);
-		about = new Button("button_base.png", "button_base_hover.png", "About", 250, 400);
-		exit = new Button("button_base.png", "button_base_hover.png", "Exit", 250, 500);
+		newGame = new Button("res/button_base.png", "res/button_base_hover.png", "New", 250, 100);
+		loadGame = new Button("res/button_base.png", "res/button_base_hover.png", "Load", 250, 200);
+		options = new Button("res/button_base.png", "res/button_base_hover.png", "Options", 250, 300);
+		about = new Button("res/button_base.png", "res/button_base_hover.png", "About", 250, 400);
+		exit = new Button("res/button_base.png", "res/button_base_hover.png", "Exit", 250, 500);
 	}
 	
 	public void render(Graphics g){
@@ -34,16 +34,18 @@ public class MainMenu extends GameState {
 	}
 	
 	public void update() throws LWSGLException{
-			if (newGame.isClicked())
-				sbg.enterState(Core.CREATE);
+
+				if (newGame.isClicked())
+				System.out.println("Button Clicked");//sbg.enterState(Core.CREATE);
 			else if (loadGame.isClicked())
-				sbg.enterState(Core.LOAD);
+					System.out.println("Button Clicked");//sbg.enterState(Core.LOAD);
 			else if (options.isClicked())
-				sbg.enterState(Core.CONFIG);
+					System.out.println("Button Clicked");//sbg.enterState(Core.CONFIG);
 			else if (about.isClicked())
-				sbg.enterState(Core.ABOUT);
+					System.out.println("Button Clicked");//sbg.enterState(Core.ABOUT);
 			else if (exit.isClicked())
 				System.exit(0);
+
 	}
 
 }

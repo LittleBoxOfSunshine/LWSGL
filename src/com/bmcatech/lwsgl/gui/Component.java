@@ -7,7 +7,6 @@ public abstract class Component {
 	
 	protected int x, y, width, height;
 	protected boolean visible=true;
-	private long lastClicked=69;
 	
 	protected final void hoverCheck(){
 		int mouseX = Input.getX();
@@ -21,12 +20,21 @@ public abstract class Component {
 	public final boolean isClicked(){
 		int mouseX = Input.getX();
 		int mouseY = Input.getY();
-		boolean isClicked = Input.isMouseButtonDown(0);
-		if(!visible || lastClicked+250>System.currentTimeMillis())
+
+		if(Input.mouseClicked(Input.LEFT_MOUSE_BUTTON) && mouseX >= x && mouseX <= x+width && mouseY >= y && mouseY<y+height){
+			onClick();
+			return true;
+		}
+		else
 			return false;
-		else if(mouseX >= x && mouseX <= x+width && mouseY >= y && mouseY<y+height && isClicked){
-			lastClicked = System.currentTimeMillis();
-			onClick(true);
+	}
+
+	public final boolean isRightClicked(){
+		int mouseX = Input.getX();
+		int mouseY = Input.getY();
+
+		if(Input.mouseClicked(Input.RIGHT_MOUSE_BUTTON) && mouseX >= x && mouseX <= x+width && mouseY >= y && mouseY<y+height){
+			onRightClick();
 			return true;
 		}
 		else
@@ -44,7 +52,24 @@ public abstract class Component {
 	}
 	
 	protected abstract void paint(Graphics g);
-	protected abstract void onHover(boolean hover);
-	protected abstract void onClick(boolean click);
+
+	//Rather than being made abstract and forcing empty implementations in subclasses the empty implementation
+	//is provided once here and can be overridden if the functionality is desired
+
+	protected void onHover(boolean hover){
+
+	}
+
+	protected void onClick(){
+
+	}
+
+	protected void onRightClick(){
+
+	}
+
+	public void onKeysTyped(final char[] keys){
+
+	}
 
 }

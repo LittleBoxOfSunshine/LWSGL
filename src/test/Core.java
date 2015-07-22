@@ -30,14 +30,14 @@ public class Core extends StateBasedGame{
 
 	public void initStatesList() throws LWSGLStateException{
 		this.getState(MENU).init();
-		this.getState(CREATE).init();
-		this.getState(LOAD).init();
-		this.getState(CONFIG).init();
-		this.getState(ABOUT).init();
+		//this.getState(CREATE).init();
+		//this.getState(LOAD).init();
+		//this.getState(CONFIG).init();
+		//this.getState(ABOUT).init();
 		this.getState(TESTAREA).init();
 		this.getState(GAME).init();
 		this.getState(MMOTEST).init();
-		this.enterState(MMOTEST);
+		this.enterState(MENU);
 	}
 	
 	public static void main(String [] args) throws LWSGLException{

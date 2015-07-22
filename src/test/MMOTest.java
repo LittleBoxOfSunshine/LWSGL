@@ -20,7 +20,7 @@ public class MMOTest extends GameState {
 
     public void init(){
         try {
-            map = new TiledMap("test.tmx");
+            map = new TiledMap("res/test.tmx");
         }catch(Exception e){
 
         }

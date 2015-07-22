@@ -38,9 +38,10 @@ public class Button extends Component{
 		else
 			i=SmartImage.cloneImage(norm);
 	}
-	
-	protected void onClick(boolean click) {
-		
+
+	@Override
+	protected void onClick() {
+		//TODO: Give button a border to make it appear like it has been clicked
 	}
 	
 	public void paint(Graphics g){

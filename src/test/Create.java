@@ -17,9 +17,9 @@ public class Create extends GameState {
 	}
 	
 	public void init(){
-		menu = new Button("button_base.png", "button_base_hover.png", "Back To Main Menu", 130, 230);
-		gui = new Button("button_base.png", "button_base_hover.png", "Show GUI", 130, 130);
-		noGui = new Button("button_base.png", "button_base_hover.png", "No GUI/Pre Render", 450, 130);
+		menu = new Button("res/button_base.png", "res/button_base_hover.png", "Back To Main Menu", 130, 230);
+		gui = new Button("res/button_base.png", "res/button_base_hover.png", "Show GUI", 130, 130);
+		noGui = new Button("res/button_base.png", "res/button_base_hover.png", "No GUI/Pre Render", 450, 130);
 	}
 	
 	public void render(Graphics g){
