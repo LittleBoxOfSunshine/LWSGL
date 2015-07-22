@@ -175,7 +175,7 @@ class KeyBuffer{
 class DragBuffer{
 	private static int currentCapacity;
 	private static Point[] buffer;
-	private static final int MAX_BUFFER_SIZE = 1000;
+	private static final int MAX_BUFFER_SIZE = 10000;
 	private static boolean event;
 
 	public DragBuffer(){
