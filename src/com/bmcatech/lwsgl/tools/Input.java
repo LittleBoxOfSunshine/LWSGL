@@ -2,7 +2,8 @@ package com.bmcatech.lwsgl.tools;
 
 
 import com.bmcatech.lwsgl.exception.LWSGLToolException;
-import com.bmcatech.lwsgl.geometry.Point;
+import com.bmcatech.lwsgl.geometry.Vector2D;
+import com.bmcatech.lwsgl.geometry.cartesian.Point;
 
 import java.awt.event.*;
 import java.util.Arrays;
@@ -99,6 +100,7 @@ public abstract class Input {
 
 				case UID_MOUSE_SCREEN:
 					mouseOnScreen = data;
+					break;
 
 				default:
 					if (memberUID <= 255 && memberUID > 0)
@@ -168,6 +170,8 @@ class KeyBuffer{
 
 }
 
+//TODO: Support for multi tick drag and drop tracking (flush needs to move data to back buffer and clear back buffer when a flag is set)
+
 class DragBuffer{
 	private static int currentCapacity;
 	private static Point[] buffer;
@@ -176,6 +180,8 @@ class DragBuffer{
 
 	public DragBuffer(){
 		buffer = new Point[MAX_BUFFER_SIZE];
+		for(int i=0; i < MAX_BUFFER_SIZE; i++)
+			buffer[i] = new Point();
 		currentCapacity = 0;
 		event = false;
 	}
@@ -198,6 +204,26 @@ class DragBuffer{
 			return Arrays.copyOfRange(buffer, 0, currentCapacity);
 		else
 			return null;
+	}
+
+	public static Vector2D getDisplacementVector(){
+		return new Vector2D(getStartPoint(), getEndPoint());
+	}
+
+	public static int getDisplacementX(){
+		return buffer[0].getX() - buffer[currentCapacity].getX();
+	}
+
+	public static int getDisplacementY(){
+		return buffer[0].getY() - buffer[currentCapacity].getY();
+	}
+
+	public static Point getStartPoint(){
+		return buffer[0];
+	}
+
+	public static Point getEndPoint(){
+		return buffer[currentCapacity];
 	}
 
 	public static boolean hasEvent(){

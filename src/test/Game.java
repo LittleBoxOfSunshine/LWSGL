@@ -8,7 +8,7 @@ import com.bmcatech.lwsgl.exception.LWSGLSubStateException;
 import com.bmcatech.lwsgl.game.GameState;
 import com.bmcatech.lwsgl.game.MultiState;
 import com.bmcatech.lwsgl.game.StateBasedGame;
-import com.bmcatech.lwsgl.gui.*;
+import com.bmcatech.lwsgl.gui.element.Button;
 
 public class Game extends MultiState {
 	

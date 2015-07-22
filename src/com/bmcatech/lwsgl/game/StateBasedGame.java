@@ -38,6 +38,10 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
 	public final void init(){//Instantiates Variables and creates and instance of the game class
 		tickNumber=0;
 		setSize(width, height);
+
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setUndecorated(true);
+
 		bufferGraphics = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		addKeyListener(this);
 		addMouseListener(this);
@@ -49,6 +53,7 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
         setResizable(false); 
         setDefaultCloseOperation(EXIT_ON_CLOSE); 
         setVisible(true);
+
 	}
 	
 	//Contains GameLoop which is launched when thread is started
@@ -149,6 +154,20 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
 	protected static void setFPS(int x){
 		fps = x;
 	}
+
+	protected abstract void initStatesList() throws LWSGLStateException;
+
+	public static int getTickNumber(){
+		return tickNumber;
+	}
+
+	/*
+	Annoyingly these functions have to go here or else additional overhead would be added by an invisible
+	window to allow adding the listeners. Maybe that overhead is worth it for code organization? There's
+	probably a better method to use (may look into JNI native hooks but that's new for me) that would allow
+	this code to go to the correct place. Maybe consider creating IO.java or specifically GameIO or ScreenIO (etc)
+	and combining the input and output code there?
+	 */
 	
 	public void keyPressed( KeyEvent e ){
 		Input.updateData(e.getKeyCode(), true);
@@ -199,9 +218,4 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
 		Input.appendDrag(me.getX(), me.getY());
 	}
 
-	protected abstract void initStatesList() throws LWSGLStateException;
-
-	public static int getTickNumber(){
-		return tickNumber;
-	}
 }

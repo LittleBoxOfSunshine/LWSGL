@@ -5,7 +5,8 @@ import java.awt.Graphics;
 import com.bmcatech.lwsgl.exception.LWSGLException;
 import com.bmcatech.lwsgl.game.GameState;
 import com.bmcatech.lwsgl.game.StateBasedGame;
-import com.bmcatech.lwsgl.gui.*;
+import com.bmcatech.lwsgl.gui.element.Button;
+import com.bmcatech.lwsgl.gui.element.DropDown;
 
 public class MainMenu extends GameState {
 	
