@@ -1,5 +1,7 @@
 package com.bmcatech.lwsgl.gui;
+
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 
 import com.bmcatech.lwsgl.tools.Input;
 
@@ -68,8 +70,8 @@ public abstract class Component {
 
 	}
 
-	public void onKeysTyped(final char[] keys){
-
+	public void onKeysTyped(final KeyEvent[] keys){
+		
 	}
 
 }

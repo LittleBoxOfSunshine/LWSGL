@@ -27,7 +27,7 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
 	private Random r = new Random();
 	private static boolean playing = true;
 	private static boolean pause = false;
-	private static ArrayList<Component> componentsWithTypeListeners, componentsWithClickListeners;
+	private static ArrayList<Component> componentsWithKeyListeners;
 	protected static int tps = 30, fps=60 , width= 500, height = 500, activeState, mouseX=0, mouseY=0;
 	private static int tickNumber;
 	private static boolean leftMouseButton, rightMouseButton, leftMouseClick, rightMouseClick;
@@ -45,7 +45,7 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
 
 	public final void init(){//Instantiates Variables and creates and instance of the game class
 		keyBuffer = new KeyBuffer();
-		componentsWithTypeListeners = new ArrayList<Component>();
+		componentsWithKeyListeners = new ArrayList<Component>();
 		leftMouseButton=false;
 		rightMouseButton=false;
 		leftMouseClick = false;
@@ -102,8 +102,8 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
 	}
 	public void update() throws LWSGLException{
 		if(keyBuffer.hasEvent()) {
-			final char[] keyB = keyBuffer.getKeys();
-			for (Component c : componentsWithTypeListeners)
+			final KeyEvent[] keyB = keyBuffer.getKeys();
+			for (Component c : componentsWithKeyListeners)
 				c.onKeysTyped(keyB);
 		}
 
@@ -112,6 +112,8 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
 		states.get(activeState).update();
 		leftMouseClick = false;
 		rightMouseClick = false;
+
+		keyBuffer.flush();
 
 	}
 	//Sleeps for x milliseconds
@@ -183,7 +185,7 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
 		keys[e.getKeyCode()] = false;
 	}
 	public void keyTyped( KeyEvent e ){
-		System.out.println(e.getKeyChar());
+		keyBuffer.appendKey(e);
 	}
 
 	public void mouseClicked(MouseEvent e) {
@@ -254,23 +256,19 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
 		return tickNumber;
 	}
 
-	public static void addComponentTypeListener(Component component){
-		componentsWithTypeListeners.add(component);
-	}
-
-	public static void addComponentClickListener(Component component){
-		componentsWithClickListeners.add(component);
+	public static void addComponentKeyListener(Component component){
+		componentsWithKeyListeners.add(component);
 	}
 }
 
 class KeyBuffer{
 	private static int currentCapacity;
-	private static char[] buffer;
-	private static final int MAX_BUFFER_SIZE = 1000;
+	private static KeyEvent[] buffer;
+	private static final int MAX_BUFFER_SIZE = 100;
 	private static boolean event;
 
 	public KeyBuffer(){
-		buffer = new char[MAX_BUFFER_SIZE];
+		buffer = new KeyEvent[MAX_BUFFER_SIZE];
 		currentCapacity = 0;
 		event = false;
 	}
@@ -280,15 +278,13 @@ class KeyBuffer{
 		event = false;
 	}
 
-	public static void appendKey(char key){
+	public static void appendKey(KeyEvent key){
 		buffer[currentCapacity] = key;
 		currentCapacity++;
 		event = true;
 	}
 
-	public static char[] getKeys(){
-		event = false;
-
+	public static KeyEvent[] getKeys(){
 		if(currentCapacity > 0)
 			return Arrays.copyOfRange(buffer, 0, currentCapacity);
 		else
