@@ -2,7 +2,7 @@ package com.bmcatech.lwsgl.game;
 
 import com.bmcatech.lwsgl.exception.LWSGLException;
 import com.bmcatech.lwsgl.exception.LWSGLStateException;
-import com.bmcatech.lwsgl.gui.Component;
+import com.bmcatech.lwsgl.geometry.Point;
 
 import java.awt.Graphics;
 import java.awt.event.KeyListener;
@@ -16,7 +16,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
@@ -27,11 +26,11 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
 	private Random r = new Random();
 	private static boolean playing = true;
 	private static boolean pause = false;
-	private static ArrayList<Component> componentsWithKeyListeners;
 	protected static int tps = 30, fps=60 , width= 500, height = 500, activeState, mouseX=0, mouseY=0;
 	private static int tickNumber;
 	private static boolean leftMouseButton, rightMouseButton, leftMouseClick, rightMouseClick;
 	private static KeyBuffer keyBuffer;
+	private static DragBuffer dragBuffer;
 	public static boolean[] keys = new boolean[255];
 	private static boolean mouseOnScreen;
 	private static long stateSwitchDelay = 100;
@@ -45,7 +44,7 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
 
 	public final void init(){//Instantiates Variables and creates and instance of the game class
 		keyBuffer = new KeyBuffer();
-		componentsWithKeyListeners = new ArrayList<Component>();
+		dragBuffer = new DragBuffer();
 		leftMouseButton=false;
 		rightMouseButton=false;
 		leftMouseClick = false;
@@ -101,12 +100,6 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
 		g.drawImage(bufferGraphics, 0, 0, this);//draw updated buffer to screen
 	}
 	public void update() throws LWSGLException{
-		if(keyBuffer.hasEvent()) {
-			final KeyEvent[] keyB = keyBuffer.getKeys();
-			for (Component c : componentsWithKeyListeners)
-				c.onKeysTyped(keyB);
-		}
-
 		tickNumber++;
 
 		states.get(activeState).update();
@@ -114,6 +107,7 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
 		rightMouseClick = false;
 
 		keyBuffer.flush();
+		dragBuffer.flush();
 
 	}
 	//Sleeps for x milliseconds
@@ -223,7 +217,7 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
 	}
 
 	public void mouseDragged(MouseEvent me){
-		//Integrated mouse Drag implementation isn't useful for this engine but the implemented function is required by the interface
+		dragBuffer.append(me.getX(), me.getY());
 	}
 
 	public static int getMouseX(){
@@ -254,10 +248,6 @@ public abstract class StateBasedGame extends JFrame implements KeyListener, Mous
 
 	public static int getTickNumber(){
 		return tickNumber;
-	}
-
-	public static void addComponentKeyListener(Component component){
-		componentsWithKeyListeners.add(component);
 	}
 }
 
@@ -295,4 +285,41 @@ class KeyBuffer{
 		return event;
 	}
 
+}
+
+class DragBuffer{
+	private static int currentCapacity;
+	private static Point[] buffer;
+	private static final int MAX_BUFFER_SIZE = 1000;
+	private static boolean event;
+
+	public DragBuffer(){
+		buffer = new Point[MAX_BUFFER_SIZE];
+		currentCapacity = 0;
+		event = false;
+	}
+
+	public static void flush(){
+		currentCapacity = 0;
+		event = false;
+	}
+
+	public static void append(int x, int y){
+		buffer[currentCapacity].setX(x);
+		buffer[currentCapacity].setY(y);
+		currentCapacity++;
+
+		event = true;
+	}
+
+	public static Point[] getPoints(){
+		if(currentCapacity > 0)
+			return Arrays.copyOfRange(buffer, 0, currentCapacity);
+		else
+			return null;
+	}
+
+	public static boolean hasEvent(){
+		return event;
+	}
 }

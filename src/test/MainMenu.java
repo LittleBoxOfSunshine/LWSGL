@@ -23,8 +23,6 @@ public class MainMenu extends GameState {
 		options = new Button("res/button_base.png", "res/button_base_hover.png", "Options", 250, 300);
 		about = new Button("res/button_base.png", "res/button_base_hover.png", "About", 250, 400);
 		exit = new Button("res/button_base.png", "res/button_base_hover.png", "Exit", 250, 500);
-
-		StateBasedGame.addComponentKeyListener(newGame);
 	}
 	
 	public void render(Graphics g){

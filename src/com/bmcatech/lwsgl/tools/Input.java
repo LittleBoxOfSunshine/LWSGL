@@ -7,8 +7,6 @@ import javax.swing.plaf.nimbus.State;
 
 public abstract class Input{
 
-	public static int oldMouseX=0, oldMouseY=0;
-
 	public static final int LEFT_MOUSE_BUTTON=StateBasedGame.LEFT_MOUSE_BUTTON, RIGHT_MOUSE_BUTTON=StateBasedGame.RIGHT_MOUSE_BUTTON;
 	
 	public static boolean isKeyDown(int keyID){

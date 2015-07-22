@@ -3,14 +3,28 @@ package com.bmcatech.lwsgl.gui;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
+import com.bmcatech.lwsgl.geometry.Point;
 import com.bmcatech.lwsgl.tools.Input;
 
 public abstract class Component {
 	
 	protected int x, y, width, height;
 	protected boolean visible=true;
+	private boolean hoverListener=false, keyListener=false, mouseListener=false;
+
+	protected final void addHoverListener(){
+		hoverListener = true;
+	}
+
+	protected final void addKeyListener(){
+		hoverListener = true;
+	}
+
+	protected final void addMouseListener(){
+		hoverListener = true;
+	}
 	
-	protected final void hoverCheck(){
+	private final void hoverCheck(){
 		int mouseX = Input.getX();
 		int mouseY = Input.getY();
 		if(mouseX >= x && mouseX <= x+width && mouseY >= y && mouseY<y+height)
@@ -44,7 +58,6 @@ public abstract class Component {
 	}
 	
 	public final void draw(Graphics g){
-		hoverCheck();
 		if(visible)
 			paint(g);
 	}
@@ -70,8 +83,21 @@ public abstract class Component {
 
 	}
 
-	public void onKeysTyped(final KeyEvent[] keys){
-		
+	protected void onKeysTyped(final KeyEvent[] keys){
+
+	}
+
+	protected void onMouseDragged(final Point[] points){
+
+	}
+
+	public final void update(){
+		if(hoverListener)
+			hoverCheck();
+		//if(keyListener)//AND key event
+			//onKeysTyped
+
+		//same for mouse
 	}
 
 }
