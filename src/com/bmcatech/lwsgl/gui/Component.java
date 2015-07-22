@@ -25,8 +25,8 @@ public abstract class Component {
 	}
 	
 	private final void hoverCheck(){
-		int mouseX = Input.getX();
-		int mouseY = Input.getY();
+		int mouseX = Input.getMouseX();
+		int mouseY = Input.getMouseY();
 		if(mouseX >= x && mouseX <= x+width && mouseY >= y && mouseY<y+height)
 			onHover(true);
 		else
@@ -34,8 +34,8 @@ public abstract class Component {
 	}
 	
 	public final boolean isClicked(){
-		int mouseX = Input.getX();
-		int mouseY = Input.getY();
+		int mouseX = Input.getMouseX();
+		int mouseY = Input.getMouseY();
 
 		if(Input.mouseClicked(Input.LEFT_MOUSE_BUTTON) && mouseX >= x && mouseX <= x+width && mouseY >= y && mouseY<y+height){
 			onClick();
@@ -46,8 +46,8 @@ public abstract class Component {
 	}
 
 	public final boolean isRightClicked(){
-		int mouseX = Input.getX();
-		int mouseY = Input.getY();
+		int mouseX = Input.getMouseX();
+		int mouseY = Input.getMouseY();
 
 		if(Input.mouseClicked(Input.RIGHT_MOUSE_BUTTON) && mouseX >= x && mouseX <= x+width && mouseY >= y && mouseY<y+height){
 			onRightClick();
