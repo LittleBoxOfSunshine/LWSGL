@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-import com.bmcatech.lwsgl.game.GameState;
-import com.bmcatech.lwsgl.game.StateBasedGame;
+import com.unobtainumsoftware.lwsgl.game.GameState;
+import com.unobtainumsoftware.lwsgl.game.StateBasedGame;
 
 
 public class TestArea extends GameState{

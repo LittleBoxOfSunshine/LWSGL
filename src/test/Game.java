@@ -2,18 +2,18 @@ package test;
 
 import java.awt.Graphics;
 
-import com.bmcatech.lwsgl.exception.LWSGLException;
-import com.bmcatech.lwsgl.exception.LWSGLStateException;
-import com.bmcatech.lwsgl.exception.LWSGLSubStateException;
-import com.bmcatech.lwsgl.game.GameState;
-import com.bmcatech.lwsgl.game.MultiState;
-import com.bmcatech.lwsgl.game.StateBasedGame;
-import com.bmcatech.lwsgl.gui.element.Button;
+import com.unobtainumsoftware.lwsgl.exception.LWSGLException;
+import com.unobtainumsoftware.lwsgl.exception.LWSGLStateException;
+import com.unobtainumsoftware.lwsgl.exception.LWSGLSubStateException;
+import com.unobtainumsoftware.lwsgl.game.GameState;
+import com.unobtainumsoftware.lwsgl.game.MultiState;
+import com.unobtainumsoftware.lwsgl.game.StateBasedGame;
+import com.unobtainumsoftware.lwsgl.gui.element.Button;
 
 public class Game extends MultiState {
 	
 	Button loadGame;
-	public static final int NOGUI = 0;
+	public static final int NO_GUI = 0;
 	public static final int GUI = 1;
 	public  static final int SETTINGS = 2;
 	private NoGUI noGui;
@@ -27,7 +27,7 @@ public class Game extends MultiState {
 	
 	public void init(boolean guiS) throws LWSGLException{
 		this.guiS = guiS;
-		noGui = new NoGUI(NOGUI, sbg);
+		noGui = new NoGUI(NO_GUI, sbg);
 		gui = new GUI(GUI, sbg);
 		s = new Settings(SETTINGS, sbg);
 		addSubState(noGui);
@@ -71,7 +71,7 @@ class Settings extends GameState {
 			if(Game.guiS)
 				Game.enterSubState(Game.GUI);
 			else
-				Game.enterSubState(Game.NOGUI);
+				Game.enterSubState(Game.NO_GUI);
 		}
 	}
 }

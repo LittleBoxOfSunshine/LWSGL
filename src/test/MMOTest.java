@@ -1,9 +1,9 @@
 package test;
 
-import com.bmcatech.lwsgl.exception.LWSGLException;
-import com.bmcatech.lwsgl.game.GameState;
-import com.bmcatech.lwsgl.game.StateBasedGame;
-import com.bmcatech.lwsgl.map.TiledMap;
+import com.unobtainumsoftware.lwsgl.exception.LWSGLException;
+import com.unobtainumsoftware.lwsgl.game.GameState;
+import com.unobtainumsoftware.lwsgl.game.StateBasedGame;
+import com.unobtainumsoftware.lwsgl.map.TiledMap;
 
 import java.awt.*;
 

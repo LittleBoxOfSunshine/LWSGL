@@ -3,10 +3,10 @@ package test;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import com.bmcatech.lwsgl.exception.LWSGLException;
-import com.bmcatech.lwsgl.game.GameState;
-import com.bmcatech.lwsgl.game.StateBasedGame;
-import com.bmcatech.lwsgl.gui.element.Button;
+import com.unobtainumsoftware.lwsgl.exception.LWSGLException;
+import com.unobtainumsoftware.lwsgl.game.GameState;
+import com.unobtainumsoftware.lwsgl.game.StateBasedGame;
+import com.unobtainumsoftware.lwsgl.gui.element.Button;
 
 public class Config extends GameState {
 	

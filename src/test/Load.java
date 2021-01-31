@@ -2,8 +2,8 @@ package test;
 
 import java.awt.Graphics;
 
-import com.bmcatech.lwsgl.game.GameState;
-import com.bmcatech.lwsgl.game.StateBasedGame;
+import com.unobtainumsoftware.lwsgl.game.GameState;
+import com.unobtainumsoftware.lwsgl.game.StateBasedGame;
 
 public class Load extends GameState {
 	

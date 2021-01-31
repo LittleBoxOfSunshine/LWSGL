@@ -1,8 +1,8 @@
 package test;
 
-import com.bmcatech.lwsgl.exception.LWSGLStateException;
-import com.bmcatech.lwsgl.game.StateBasedGame;
-import com.bmcatech.lwsgl.exception.LWSGLException;
+import com.unobtainumsoftware.lwsgl.exception.LWSGLStateException;
+import com.unobtainumsoftware.lwsgl.game.StateBasedGame;
+import com.unobtainumsoftware.lwsgl.exception.LWSGLException;
 
 public class Core extends StateBasedGame{
 	
